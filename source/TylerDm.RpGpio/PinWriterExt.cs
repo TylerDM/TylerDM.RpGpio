@@ -5,6 +5,9 @@ public static class PinWriterExt
 	public static PulsingScope PulsingScope(this IPinWriter writer, TimeSpan? onTime = null, TimeSpan? offTime = null) =>
 		new(writer, onTime, offTime);
 
+	public static ToggleScope ToggleScope(this IPinWriter writer) =>
+		new(writer);
+
 	public static void Pulse(this IPinWriter writer, bool value = true)
 	{
 		writer.Write(value);
