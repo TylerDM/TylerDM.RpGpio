@@ -1,4 +1,6 @@
-﻿namespace TylerDm.RpGpio;
+﻿using TylerDm.RpGpio.Extensions;
+
+namespace TylerDm.RpGpio;
 
 public class PinReaderTests
 {
@@ -25,8 +27,8 @@ public class PinReaderTests
 	[Fact]
 	public async Task CountPulsesAsync()
 	{
-		var gpio = new TestingGpio();
 		using var cts = new CancellationTokenSource();
+		var gpio = new TestingGpio();
 
 		var read = gpio.OpenRead(default);
 		var write = (IPinWriter)read;
@@ -52,13 +54,11 @@ public class PinReaderTests
 	public async Task WaitForPulsesTimeoutAsync()
 	{
 		var gpio = new TestingGpio();
-
 		var pin = gpio.OpenRead(default);
 
 		var waitTask = Task.Run(() => pin.WaitForPulsesAsync(2, TimeSpan.FromMilliseconds(10)));
 		Assert.False(waitTask.IsCompletedSuccessfully);
-
-		await waitTask.WaitAsync(TimeSpan.FromMilliseconds(100));
+		await waitTask.TryWaitAsync(TimeSpan.FromMilliseconds(20));
 		Assert.True(waitTask.IsCompleted);
 		Assert.False(waitTask.IsCompletedSuccessfully);
 	}
