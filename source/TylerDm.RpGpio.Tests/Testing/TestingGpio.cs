@@ -1,6 +1,5 @@
 ﻿namespace TylerDm.RpGpio.Testing;
 
-[DependencyInjectable(ServiceLifetime.Singleton, typeof(IGpio))]
 public class TestingGpio : IGpio
 {
 	private readonly Dictionary<PinNumber, bool> _values = [];

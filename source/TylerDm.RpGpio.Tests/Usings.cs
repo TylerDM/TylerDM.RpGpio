@@ -1,10 +1,6 @@
 ﻿global using Xunit;
-global using Microsoft.Extensions.Hosting;
 global using System;
 global using System.Threading;
 global using System.Threading.Tasks;
-global using TylerDm.RpGpio;
-global using Microsoft.Extensions.DependencyInjection;
 global using System.Collections.Generic;
-global using TylerDM.OrangePeel;
 global using TylerDm.RpGpio.Testing;

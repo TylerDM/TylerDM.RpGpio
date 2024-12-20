@@ -6,7 +6,6 @@ public class PinReaderTests
 	public async Task WaitForPulsesAsync()
 	{
 		var gpio = new TestingGpio();
-
 		var pin = gpio.OpenRead(default);
 		var writablePin = (IPinWriter)pin;
 
@@ -27,13 +26,14 @@ public class PinReaderTests
 	public async Task CountPulsesAsync()
 	{
 		var gpio = new TestingGpio();
+		using var cts = new CancellationTokenSource();
 
 		var read = gpio.OpenRead(default);
 		var write = (IPinWriter)read;
 
-		using var cts = new CancellationTokenSource();
 		var waitTask = Task.Run(() => read.CountPulsesAsync(cts.Token));
 		Assert.False(waitTask.IsCompleted);
+		await letPropagateAsync();
 
 		write.Pulse();
 		write.Pulse();
@@ -41,7 +41,7 @@ public class PinReaderTests
 		Assert.False(waitTask.IsCompleted);
 
 		cts.Cancel();
-		await letPropagateAsync();
+		await waitTask.WaitAsync(TimeSpan.FromMilliseconds(100));
 		Assert.True(waitTask.IsCompletedSuccessfully);
 
 		var result = await waitTask;
@@ -58,7 +58,7 @@ public class PinReaderTests
 		var waitTask = Task.Run(() => pin.WaitForPulsesAsync(2, TimeSpan.FromMilliseconds(10)));
 		Assert.False(waitTask.IsCompletedSuccessfully);
 
-		await letPropagateAsync(20);
+		await waitTask.WaitAsync(TimeSpan.FromMilliseconds(100));
 		Assert.True(waitTask.IsCompleted);
 		Assert.False(waitTask.IsCompletedSuccessfully);
 	}
