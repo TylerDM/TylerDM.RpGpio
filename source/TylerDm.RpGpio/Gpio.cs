@@ -5,13 +5,13 @@ public class Gpio : IDisposable, IGpio
 {
 	private readonly GpioController _controller = new();
 
-	public IPinWriter OpenWrite(PinNumber pinNumber)
+	public PinWriter OpenWrite(PinNumber pinNumber)
 	{
 		var pin = _controller.OpenPin((int)pinNumber, PinMode.Output);
 		return new PinWriter(_controller, pin);
 	}
 
-	public IPinReader OpenRead(PinNumber pinNumber)
+	public PinReader OpenRead(PinNumber pinNumber)
 	{
 		var pin = _controller.OpenPin((int)pinNumber, PinMode.Input);
 		return new PinReader(_controller, pin);
@@ -19,4 +19,10 @@ public class Gpio : IDisposable, IGpio
 
 	public void Dispose() =>
 		_controller.Dispose();
+
+	IPinWriter IGpio.OpenWrite(PinNumber pinNumber) =>
+		OpenWrite(pinNumber);
+
+	IPinReader IGpio.OpenRead(PinNumber pinNumber) =>
+		OpenRead(pinNumber);
 }

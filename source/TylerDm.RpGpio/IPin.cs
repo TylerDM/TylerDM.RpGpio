@@ -2,5 +2,5 @@
 
 public interface IPin : IDisposable
 {
-	public PinNumber Number { get; }
+	PinNumber Number { get; }
 }
