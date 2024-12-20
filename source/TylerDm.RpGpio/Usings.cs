@@ -1,0 +1,11 @@
+﻿global using System.Device.Gpio;
+global using Microsoft.Extensions.DependencyInjection;
+global using System;
+global using TylerDM.OrangePeel;
+global using System.Threading;
+global using System.Threading.Tasks;
+global using System.Collections.Generic;
+global using System.Collections;
+global using System.Linq;
+global using TylerDM.StandardLibrary.System;
+global using TylerDM.StandardLibrary.System.Threading;

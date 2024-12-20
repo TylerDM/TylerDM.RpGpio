@@ -1,0 +1,34 @@
+<Project>
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<RootNamespace>TylerDm.RpGpio</RootNamespace>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Nullability">
+		<Nullable>enable</Nullable>
+		<WarningsAsErrors>
+			CS8600;
+			CS8602;
+			CS8603;
+			CS8625;
+			CS8619;
+			CS8618;
+			CS8601;
+			AD0001;<!-- Nullable reference types may be null. -->
+			CS8604;<!-- Possible null reference argument. -->
+			CS8629;<!-- Nullable value type may be null. -->
+			CS8653;<!-- A default expression introduces a null value for a type parameter when T is a class. -->
+			CS8613;<!-- Nullability of reference types in return type doesn't match implicitly implemented member. -->
+			CS8605;<!-- Unboxing a possibly null value. -->
+			CS8714;<!-- The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'notnull' constraint. -->
+			CS8609;<!-- Nullability of reference types in return type doesn't match overridden member. -->
+			CS8605;<!-- Unboxing a possibly null value. -->
+			CS8597;<!-- Thrown value may be null. -->
+			CS8610;<!-- Nullability of reference types in type of parameter doesn't match overridden member. -->
+			RZ10012;<!-- Found markup element with unexpected name... -->
+		</WarningsAsErrors>
+	</PropertyGroup>
+
+</Project>

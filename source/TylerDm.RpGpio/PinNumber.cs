@@ -1,0 +1,31 @@
+﻿namespace TylerDm.RpGpio;
+
+public enum PinNumber : byte
+{
+	_2_I2c_Sda = 2,
+	_3_I2c_Scl = 3,
+	_4 = 4,
+	_5 = 5,
+	_6 = 6,
+	_7_Spi_Ce1 = 7,
+	_8_Spi_Ce0 = 8,
+	_9_Spi_Miso = 9,
+	_10_Spi_Mosi = 10,
+	_11_Spi_Sclk = 11,
+	_12 = 12,
+	_13 = 13,
+	_14_Uart_Txd = 14,
+	_15_Uart_Rxd = 15,
+	_16 = 16,
+	_17 = 17,
+	_18_Pcm_Clk = 18,
+	_19_Pcm_Fs = 19,
+	_20_Pcm_Din = 20,
+	_21_Pcm_Dout = 21,
+	_22 = 22,
+	_23 = 23,
+	_24 = 24,
+	_25 = 25,
+	_26 = 26,
+	_27 = 27,
+}
