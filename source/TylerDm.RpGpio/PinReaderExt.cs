@@ -7,7 +7,7 @@ public static class PinReaderExt
 	/// </summary>
 	public static async Task WaitForPulsesAsync(this IPinReader reader, int count, TimeSpan timeout)
 	{
-		using var cts = new CancellationTokenSource(timeout);
+		using var cts = new Cts(timeout);
 		await reader.WaitForPulsesAsync(count, cts.Token);
 	}
 
@@ -44,7 +44,7 @@ public static class PinReaderExt
 	/// </summary>
 	public static async Task<decimal> CountPulsesAsync(this IPinReader reader, TimeSpan timeout, Action? onPulse = null)
 	{
-		using var cts = new CancellationTokenSource(timeout);
+		using var cts = new Cts(timeout);
 		return await reader.CountPulsesAsync(cts.Token, onPulse);
 	}
 
