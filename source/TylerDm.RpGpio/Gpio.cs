@@ -13,7 +13,7 @@ public class Gpio : IDisposable, IGpio
 
 	public PinReader OpenRead(PinNumber pinNumber)
 	{
-		var pin = _controller.OpenPin((int)pinNumber, PinMode.Input);
+		var pin = _controller.OpenPin((int)pinNumber, PinMode.InputPullDown);
 		return new PinReader(_controller, pin);
 	}
 
