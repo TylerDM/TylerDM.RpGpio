@@ -1,3 +1,3 @@
 ﻿namespace TylerDm.RpGpio;
 
-public delegate void PinChangedEvent(PinEvents Type);
+public delegate void PinChangedEvent(PinEventTypes Type);

@@ -29,9 +29,9 @@ public class TestingPin(TestingGpio gpio, PinNumber number) : IPinReader, IPinWr
 		valueChanged.Invoke(eventType);
 	}
 
-	private static PinEvents getEventType(bool previousValue, bool newValue)
+	private static PinEventTypes getEventType(bool previousValue, bool newValue)
 	{
-		if (previousValue == newValue) return PinEvents.None;
-		return newValue ? PinEvents.Rising : PinEvents.Falling;
+		if (previousValue == newValue) return PinEventTypes.None;
+		return newValue ? PinEventTypes.Rising : PinEventTypes.Falling;
 	}
 }

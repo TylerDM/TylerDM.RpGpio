@@ -25,5 +25,5 @@ public class PinReader : Pin, IPinReader
 		(bool)_pin.Read();
 
 	private void handleValueChanged(object sender, PinValueChangedEventArgs args) =>
-		valueChanged?.Invoke((PinEvents)args.ChangeType);
+		valueChanged?.Invoke((PinEventTypes)args.ChangeType);
 }

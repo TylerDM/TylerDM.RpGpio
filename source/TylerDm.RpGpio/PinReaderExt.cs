@@ -14,14 +14,14 @@ public static class PinReaderExt
 	/// <summary>
 	/// Holds the thread until the specified number of pulses have been read.
 	/// </summary>
-	public static async Task WaitForPulsesAsync(this IPinReader reader, int count, CancellationToken ct)
+	public static async Task WaitForPulsesAsync(this IPinReader reader, int count, Ct ct)
 	{
 		var pulses = 0;
 		var gate = new Gate();
 
-		void handlePulse(PinEvents type)
+		void handlePulse(PinEventTypes type)
 		{
-			if (type is not PinEvents.Rising) return;
+			if (type is not PinEventTypes.Rising) return;
 
 			pulses++;
 			if (pulses >= count)
@@ -51,14 +51,14 @@ public static class PinReaderExt
 	/// <summary>
 	/// Counts the number of pulses between invocation and cancellation. Executes onPulse each time a pulse of observed.
 	/// </summary>
-	public static async Task<decimal> CountPulsesAsync(this IPinReader reader, CancellationToken ct, Action? onPulse = null)
+	public static async Task<decimal> CountPulsesAsync(this IPinReader reader, Ct ct, Action? onPulse = null)
 	{
 		var pulses = 0;
 		var gate = new Gate();
 
-		void handlePulse(PinEvents type)
+		void handlePulse(PinEventTypes type)
 		{
-			if (type is not PinEvents.Rising) return;
+			if (type is not PinEventTypes.Rising) return;
 
 			pulses++;
 			onPulse?.Invoke();
