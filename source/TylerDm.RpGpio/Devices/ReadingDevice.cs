@@ -9,10 +9,14 @@ public abstract class ReadingDevice : IDevice, IDisposable
 	protected ReadingDevice(IPinReader pin)
 	{
 		_pin = pin;
+		_pin.ValueChanged += handleValueChanged;
 	}
 
-	public void Dispose()
+	public virtual void Dispose()
 	{
+		_pin.ValueChanged -= handleValueChanged;
 		_pin.Dispose();
 	}
+
+	protected abstract void handleValueChanged(PinEventTypes type);
 }

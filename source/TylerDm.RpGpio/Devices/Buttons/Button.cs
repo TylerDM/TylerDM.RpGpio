@@ -1,12 +1,10 @@
 ﻿namespace TylerDm.RpGpio.Devices.Buttons;
 
-public class Button : IDisposable, IDevice
+public class Button(IPinReader pin) : ReadingDevice(pin)
 {
 	internal readonly DisposedTracker<Button> _disposed = new();
 	private readonly Lock _lock = new();
 	private readonly Stopwatch _stopwatch = new();
-
-	private readonly IPinReader _pin;
 
 	private event ButtonPressedEvent? onPressedEvent;
 	private event ButtonReleasedEvent? onReleasedEvent;
@@ -38,14 +36,6 @@ public class Button : IDisposable, IDevice
 		}
 	}
 
-	public PinNumber PinNumber => _pin.Number;
-
-	public Button(IPinReader pin)
-	{
-		_pin = pin;
-		_pin.ValueChanged += handlePinChanged;
-	}
-
 	public async Task<bool> TryWaitForPressAsync(Ct ct)
 	{
 		_disposed.ThrowIf();
@@ -67,17 +57,16 @@ public class Button : IDisposable, IDevice
 		}
 	}
 
-	public void Dispose()
+	public override void Dispose()
 	{
 		if (_disposed.Dispose()) return;
 
 		onPressedEvent = null;
 		onReleasedEvent = null;
-		_pin.ValueChanged -= handlePinChanged;
-		_pin.Dispose();
+		base.Dispose();
 	}
 
-	private void handlePinChanged(PinEventTypes type)
+	protected override void handleValueChanged(PinEventTypes type)
 	{
 		lock (_lock)
 		{

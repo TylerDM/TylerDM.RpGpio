@@ -15,9 +15,10 @@ public class Buzzer : WritingDevice
 		set => setValue(value);
 	}
 
-	public Buzzer(IPinWriter pin) : base(pin)
+	public Buzzer(IPinWriter pin, bool? initialState = false) : base(pin)
 	{
-		pin.Write(false);
+		if (initialState is bool b)
+			pin.Write(b);
 	}
 
 	public async Task BuzzAsync(int count, TimeSpan onDuration = default, TimeSpan offDuration = default, Ct ct = default)
