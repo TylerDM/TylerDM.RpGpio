@@ -4,11 +4,14 @@ public static class TaskExt
 {
 	public static async Task<bool> TryWaitAsync(this Task task, TimeSpan timeout)
 	{
-		using var cts = new CancellationTokenSource(timeout);
+		using var cts = new Cts(timeout);
 		return await task.TryWaitAsync(cts.Token);
 	}
 
-	public static async Task<bool> TryWaitAsync(this Task task, CancellationToken cancellationToken)
+	public static Task<bool> TryWaitAsync(this Task task, Cts cts) =>
+		task.TryWaitAsync(cts.Token);
+
+	public static async Task<bool> TryWaitAsync(this Task task, Ct cancellationToken)
 	{
 		try
 		{
