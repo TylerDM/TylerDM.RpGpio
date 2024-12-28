@@ -1,17 +1,15 @@
 ﻿namespace TylerDm.RpGpio.Devices.Leds;
 
-public class Led : IDisposable, IDevice
+public class Led : WritingDevice
 {
 	//CTS from _disposed not to be used here as we need a resettable one.
 	private readonly DisposedTracker<Led> _disposed = new();
-	private readonly IPinWriter _pin;
 
 	private Cts cts = new();
-	private bool lit = false;
 
 	public bool Lit
 	{
-		get => lit;
+		get => getValue();
 		set
 		{
 			methodPreflight();
@@ -20,14 +18,10 @@ public class Led : IDisposable, IDevice
 		}
 	}
 
-	public PinNumber PinNumber => _pin.Number;
-
-	public Led(IPinWriter pin, bool? defaultState = false)
+	public Led(IPinWriter pin, bool? defaultState = false) : base(pin)
 	{
-		_pin = pin;
-
 		if (defaultState is bool ds)
-			_pin.Write(ds);
+			setValue(ds);
 	}
 
 	public void Toggle()
@@ -84,13 +78,13 @@ public class Led : IDisposable, IDevice
 		}
 	}
 
-	public void Dispose()
+	public override void Dispose()
 	{
 		if (_disposed) return;
 		_disposed.Dispose();
 
-		cts?.Dispose();
-		_pin.Dispose();
+		cts.Dispose();
+		base.Dispose();
 	}
 
 	private void methodPreflight()
@@ -103,11 +97,5 @@ public class Led : IDisposable, IDevice
 	{
 		cts.Cancel();
 		cts = new();
-	}
-
-	private void setValue(bool value)
-	{
-		_pin.Write(value);
-		lit = value;
 	}
 }
