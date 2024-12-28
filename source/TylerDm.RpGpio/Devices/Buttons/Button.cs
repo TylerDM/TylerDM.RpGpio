@@ -35,6 +35,23 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 			onReleasedEvent -= value;
 		}
 	}
+	public async Task<bool> TryWaitForPressAsync()
+	{
+		_disposed.ThrowIf();
+
+		using var gate = new Gate();
+		void handlePressed() => gate.Open();
+
+		OnPressedEvent += handlePressed;
+		try
+		{
+			return await gate.TryWaitAsync(_disposed.CancellationToken);
+		}
+		finally
+		{
+			OnPressedEvent -= handlePressed;
+		}
+	}
 
 	public async Task<bool> TryWaitForPressAsync(Ct ct)
 	{
