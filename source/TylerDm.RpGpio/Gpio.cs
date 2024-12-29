@@ -1,6 +1,5 @@
 ﻿namespace TylerDm.RpGpio;
 
-[DependencyInjectable(ServiceLifetime.Singleton, typeof(IGpio))]
 public class Gpio : IDisposable, IGpio
 {
 	private readonly GpioController _controller = new();
