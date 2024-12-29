@@ -2,7 +2,7 @@
 
 public class Button(IPinReader pin) : ReadingDevice(pin)
 {
-	internal readonly DisposedTracker<Button> _disposed = new();
+	private readonly DisposedTracker<Button> _disposed = new();
 	private readonly Lock _lock = new();
 	private readonly Stopwatch _stopwatch = new();
 
