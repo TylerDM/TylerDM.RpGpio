@@ -1,4 +1,5 @@
-﻿global using System.Device.Gpio;
+﻿global using static TylerDm.RpGpio.Constants;
+global using System.Device.Gpio;
 global using Microsoft.Extensions.DependencyInjection;
 global using System;
 global using System.Threading;
