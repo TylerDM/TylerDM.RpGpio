@@ -8,33 +8,33 @@ public class Pulser : ReadingDevice
 	private readonly PinEventTypes _pulseStartEvent;
 	private readonly PinEventTypes _pulseEndEvent;
 
-	private event PulseStarted? onPulseStart;
-	private event PulseEnded? onPulseEnd;
+	private event PulseStarted? onPulseStarted;
+	private event PulseEnded? onPulseEnded;
 
-	public event PulseStarted OnPulseStart
+	public event PulseStarted OnPulseStarted
 	{
 		add
 		{
 			_disposed.ThrowIf();
-			onPulseStart += value;
+			onPulseStarted += value;
 		}
 		remove
 		{
 			_disposed.ThrowIf();
-			onPulseStart -= value;
+			onPulseStarted -= value;
 		}
 	}
-	public event PulseEnded OnPulseEnd
+	public event PulseEnded OnPulseEnded
 	{
 		add
 		{
 			_disposed.ThrowIf();
-			onPulseEnd += value;
+			onPulseEnded += value;
 		}
 		remove
 		{
 			_disposed.ThrowIf();
-			onPulseEnd -= value;
+			onPulseEnded -= value;
 		}
 	}
 
@@ -62,13 +62,13 @@ public class Pulser : ReadingDevice
 			if (eventType == _pulseStartEvent)
 			{
 				_stopWatch.Start();
-				onPulseStart?.Invoke();
+				onPulseStarted?.Invoke();
 			}
 
 			if (eventType == _pulseEndEvent)
 			{
 				_stopWatch.Stop();
-				onPulseEnd?.Invoke(_stopWatch.Elapsed);
+				onPulseEnded?.Invoke(_stopWatch.Elapsed);
 				_stopWatch.Reset();
 			}
 		}

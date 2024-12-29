@@ -6,33 +6,33 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 	private readonly Lock _lock = new();
 	private readonly Stopwatch _stopwatch = new();
 
-	private event ButtonPressed? onPressedEvent;
-	private event ButtonReleased? onReleasedEvent;
+	private event ButtonPressed? onButtonPressed;
+	private event ButtonReleased? onButtonReleased;
 
-	public event ButtonPressed OnPressedEvent
+	public event ButtonPressed OnButtonPressed
 	{
 		add
 		{
 			_disposed.ThrowIf();
-			onPressedEvent += value;
+			onButtonPressed += value;
 		}
 		remove
 		{
 			_disposed.ThrowIf();
-			onPressedEvent -= value;
+			onButtonPressed -= value;
 		}
 	}
-	public event ButtonReleased OnReleasedEvent
+	public event ButtonReleased OnButtonReleased
 	{
 		add
 		{
 			_disposed.ThrowIf();
-			onReleasedEvent += value;
+			onButtonReleased += value;
 		}
 		remove
 		{
 			_disposed.ThrowIf();
-			onReleasedEvent -= value;
+			onButtonReleased -= value;
 		}
 	}
 
@@ -40,8 +40,8 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 	{
 		if (_disposed.Dispose()) return;
 
-		onPressedEvent = null;
-		onReleasedEvent = null;
+		onButtonPressed = null;
+		onButtonReleased = null;
 		base.Dispose();
 	}
 
@@ -52,13 +52,13 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 			if (type == PinEventTypes.Rising)
 			{
 				_stopwatch.Start();
-				onPressedEvent?.Invoke();
+				onButtonPressed?.Invoke();
 			}
 
 			if (type == PinEventTypes.Falling)
 			{
 				_stopwatch.Stop();
-				onReleasedEvent?.Invoke(_stopwatch.Elapsed);
+				onButtonReleased?.Invoke(_stopwatch.Elapsed);
 				_stopwatch.Reset();
 			}
 		}

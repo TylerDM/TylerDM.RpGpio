@@ -23,12 +23,12 @@ public static class PulserExtensions
 		void handlePulse() => gate.Open();
 		try
 		{
-			pulser.OnPulseStart += handlePulse;
+			pulser.OnPulseStarted += handlePulse;
 			await gate.WaitAsync(ct);
 		}
 		finally
 		{
-			pulser.OnPulseStart -= handlePulse;
+			pulser.OnPulseStarted -= handlePulse;
 		}
 	}
 
@@ -39,12 +39,12 @@ public static class PulserExtensions
 		void handlePulse() => value++;
 		try
 		{
-			pulser.OnPulseStart += handlePulse;
+			pulser.OnPulseStarted += handlePulse;
 			await gate.TryWaitAsync(ct);
 		}
 		finally
 		{
-			pulser.OnPulseStart -= handlePulse;
+			pulser.OnPulseStarted -= handlePulse;
 		}
 		return value;
 	}

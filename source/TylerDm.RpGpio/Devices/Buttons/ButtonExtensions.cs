@@ -18,14 +18,14 @@ public static class ButtonExtensions
 				gate.Open();
 		}
 
-		button.OnPressedEvent += handlePressed;
+		button.OnButtonPressed += handlePressed;
 		try
 		{
 			await gate.WaitAsync(ct);
 		}
 		finally
 		{
-			button.OnPressedEvent -= handlePressed;
+			button.OnButtonPressed -= handlePressed;
 		}
 	}
 
@@ -34,14 +34,14 @@ public static class ButtonExtensions
 		using var gate = new Gate();
 		void handlePressed() => gate.Open();
 
-		button.OnPressedEvent += handlePressed;
+		button.OnButtonPressed += handlePressed;
 		try
 		{
 			await gate.WaitAsync(ct);
 		}
 		finally
 		{
-			button.OnPressedEvent -= handlePressed;
+			button.OnButtonPressed -= handlePressed;
 		}
 	}
 }
