@@ -7,7 +7,7 @@ public static class ButtonExtensions
 
 	public static async Task WaitForPressesAsync(this Button button, int count, CancellationToken ct = default)
 	{
-		ArgumentOutOfRangeException.ThrowIfLessThan(1, count);
+		ArgumentOutOfRangeException.ThrowIfLessThan(count, 1);
 
 		var value = 0;
 		using var gate = new Gate();

@@ -7,7 +7,7 @@ public static class PulserExtensions
 
 	public static async Task WaitForPulsesAsync(this Pulser pulser, int count, CancellationToken ct = default)
 	{
-		ArgumentOutOfRangeException.ThrowIfLessThan(1, count);
+		ArgumentOutOfRangeException.ThrowIfLessThan(count, 1);
 
 		for (int i = 0; i < count; i++)
 		{

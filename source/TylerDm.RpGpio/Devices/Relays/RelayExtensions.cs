@@ -1,4 +1,6 @@
-﻿namespace TylerDm.RpGpio.Devices.Relays;
+﻿using System.Diagnostics.Metrics;
+
+namespace TylerDm.RpGpio.Devices.Relays;
 
 public static class RelayExtensions
 {
@@ -25,7 +27,7 @@ public static class RelayExtensions
 
 	public static async Task PulseAsync(this Relay relay, int count, TimeSpan onDuration = default, TimeSpan offDuration = default, CancellationToken ct = default)
 	{
-		ArgumentOutOfRangeException.ThrowIfLessThan(1, count);
+		ArgumentOutOfRangeException.ThrowIfLessThan(count, 1);
 
 		if (onDuration == default) onDuration = _defaultDuration;
 		if (offDuration == default) offDuration = _defaultDuration;
