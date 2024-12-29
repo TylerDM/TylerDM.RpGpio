@@ -1,10 +1,8 @@
-﻿using System.Diagnostics.Metrics;
-
-namespace TylerDm.RpGpio.Devices.Relays;
+﻿namespace TylerDm.RpGpio.Devices.Relays;
 
 public static class RelayExtensions
 {
-	private static readonly TimeSpan _defaultDuration = TimeSpan.FromMilliseconds(100);
+	private static readonly TimeSpan _defaultDuration = TimeSpan.FromMilliseconds(10);
 
 	public static Relay OpenRelay(this IGpio gpio, PinNumber pin) =>
 		new(gpio.OpenWrite(pin));
