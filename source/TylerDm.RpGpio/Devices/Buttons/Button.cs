@@ -6,6 +6,8 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 	private readonly Lock _lock = new();
 	private readonly Stopwatch _stopwatch = new();
 
+	private bool pressed = false;
+
 	private event ButtonPressed? onButtonPressed;
 	private event ButtonReleased? onButtonReleased;
 
@@ -51,12 +53,19 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 		{
 			if (type == PinEventTypes.Rising)
 			{
+				//Prevent double rising events.
+				if (pressed) return;
+				pressed = true;
+
 				_stopwatch.Start();
 				onButtonPressed?.Invoke();
 			}
 
 			if (type == PinEventTypes.Falling)
 			{
+				//Prevent double rising events.
+				pressed = false;
+
 				_stopwatch.Stop();
 				onButtonReleased?.Invoke(_stopwatch.Elapsed);
 				_stopwatch.Reset();
