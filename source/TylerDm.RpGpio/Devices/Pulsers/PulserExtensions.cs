@@ -5,7 +5,7 @@ public static class PulserExtensions
 	public static Pulser OpenPulser(this IGpio gpio, PinNumber pin, PinReadModes mode = PinReadModes.InputPullDown) =>
 		new(gpio.OpenRead(pin, mode));
 
-	public static async Task WaitForPulsesAsync(this Pulser pulser, int count, CancellationToken ct = default)
+	public static async Task WaitForPulsesAsync(this Pulser pulser, int count, TimeSpan minimumDuration = default, CancellationToken ct = default)
 	{
 		ArgumentOutOfRangeException.ThrowIfLessThan(count, 1);
 
@@ -13,22 +13,26 @@ public static class PulserExtensions
 		{
 			if (ct.IsCancellationRequested) break;
 
-			await pulser.WaitForPulseAsync(ct);
+			await pulser.WaitForPulseAsync(minimumDuration, ct);
 		}
 	}
 
-	public static async Task WaitForPulseAsync(this Pulser pulser, CancellationToken ct = default)
+	public static async Task WaitForPulseAsync(this Pulser pulser, TimeSpan minimumDuration = default, CancellationToken ct = default)
 	{
 		using var gate = new Gate();
-		void handlePulse() => gate.Open();
+		void handlePulse(TimeSpan duration)
+		{
+			if (duration <= minimumDuration) return;
+			gate.Open();
+		}
 		try
 		{
-			pulser.OnPulseStarted += handlePulse;
+			pulser.OnPulseEnded += handlePulse;
 			await gate.WaitAsync(ct);
 		}
 		finally
 		{
-			pulser.OnPulseStarted -= handlePulse;
+			pulser.OnPulseEnded -= handlePulse;
 		}
 	}
 
