@@ -3,7 +3,6 @@
 public class Relay : WritingDevice
 {
 	private readonly DisposedTracker<Relay> _disposed = new();
-	private readonly bool _energizedState;
 
 	public bool Energized
 	{
@@ -11,10 +10,9 @@ public class Relay : WritingDevice
 		set => setValue(value);
 	}
 
-	public Relay(IPinWriter pin, bool energizedState = true) : base(pin)
+	public Relay(IPinWriter pin) : base(pin)
 	{
-		_energizedState = energizedState;
-		setValue(_energizedState);
+		setValue(false);
 	}
 
 	public override void Dispose()

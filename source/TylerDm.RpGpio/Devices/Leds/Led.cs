@@ -2,15 +2,24 @@
 
 public class Led : WritingDevice
 {
+	private readonly DisposedTracker<Led> _disposed = new();
+
 	public bool On
 	{
 		get => getValue();
 		set => setValue(value);
 	}
 
-	public Led(IPinWriter pin, bool? defaultState = false) : base(pin)
+	public Led(IPinWriter pin) : base(pin)
 	{
-		if (defaultState is bool ds)
-			setValue(ds);
+		On = false;
+	}
+
+	public override void Dispose()
+	{
+		if (_disposed.Dispose()) return;
+
+		On = false;
+		base.Dispose();
 	}
 }

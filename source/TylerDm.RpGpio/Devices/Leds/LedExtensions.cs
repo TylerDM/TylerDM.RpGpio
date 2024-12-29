@@ -2,8 +2,8 @@
 
 public static class LedExtensions
 {
-	public static Led OpenLed(this IGpio gpio, PinNumber pin, bool? defaultState = false) =>
-		new(gpio.OpenWrite(pin), defaultState);
+	public static Led OpenLed(this IGpio gpio, PinNumber pin) =>
+		new(gpio.OpenWrite(pin));
 
 	public static void Toggle(this Led led) =>
 		led.On = !led.On;

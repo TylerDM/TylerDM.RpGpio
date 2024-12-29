@@ -10,10 +10,9 @@ public class Buzzer : WritingDevice
 		set => setValue(value);
 	}
 
-	public Buzzer(IPinWriter pin, bool? initialState = false) : base(pin)
+	public Buzzer(IPinWriter pin) : base(pin)
 	{
-		if (initialState is bool b)
-			pin.Write(b);
+		On = false;
 	}
 
 	public override void Dispose()
