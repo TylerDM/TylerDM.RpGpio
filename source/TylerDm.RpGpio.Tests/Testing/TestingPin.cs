@@ -1,6 +1,6 @@
 ﻿namespace TylerDm.RpGpio.Testing;
 
-public class TestingPin(TestingGpio gpio, PinNumber number) : IPinReader, IPinWriter
+public class TestingPin(TestingGpio gpio, PinNumber number, PinReadModes mode) : IPinReader, IPinWriter
 {
 	private PinChangedEvent? valueChanged;
 
@@ -11,6 +11,7 @@ public class TestingPin(TestingGpio gpio, PinNumber number) : IPinReader, IPinWr
 	}
 
 	public PinNumber Number { get; } = number;
+	public PinReadModes Mode { get; } = mode;
 
 	public void Dispose() { }
 
