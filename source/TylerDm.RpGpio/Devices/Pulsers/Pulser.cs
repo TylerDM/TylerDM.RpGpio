@@ -1,12 +1,10 @@
 ﻿namespace TylerDm.RpGpio.Devices.Pulsers;
 
-public class Pulser : ReadingDevice
+public class Pulser(IPinReader pin) : ReadingDevice(pin)
 {
 	private readonly DisposedTracker<Pulser> _disposed = new();
 	private readonly Lock _lock = new();
 	private readonly Stopwatch _stopWatch = new();
-	private readonly PinEventTypes _pulseStartEvent;
-	private readonly PinEventTypes _pulseEndEvent;
 
 	private event PulseStarted? onPulseStarted;
 	private event PulseEnded? onPulseEnded;
@@ -38,15 +36,6 @@ public class Pulser : ReadingDevice
 		}
 	}
 
-	public Pulser(IPinReader pin, bool restState = false) : base(pin)
-	{
-		//This allows the caller to specify what the expected rest state is.
-		//From there we wait for the transition into the active (pulsed) state.
-		//So if the rest state is true, then falling to false would be the pulse.
-		_pulseStartEvent = restState ? PinEventTypes.Falling : PinEventTypes.Rising;
-		_pulseEndEvent = restState ? PinEventTypes.Rising : PinEventTypes.Falling;
-	}
-
 	public override void Dispose()
 	{
 		if (_disposed) return;
@@ -59,13 +48,13 @@ public class Pulser : ReadingDevice
 	{
 		lock (_lock)
 		{
-			if (eventType == _pulseStartEvent)
+			if (eventType == _activatingEvent)
 			{
 				_stopWatch.Start();
 				onPulseStarted?.Invoke();
 			}
 
-			if (eventType == _pulseEndEvent)
+			if (eventType == _deactivatingEvent)
 			{
 				_stopWatch.Stop();
 				onPulseEnded?.Invoke(_stopWatch.Elapsed);

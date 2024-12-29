@@ -51,7 +51,7 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 	{
 		lock (_lock)
 		{
-			if (type == PinEventTypes.Rising)
+			if (type == _activatingEvent)
 			{
 				//Prevent double rising events.
 				if (pressed) return;
@@ -61,7 +61,7 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 				onButtonPressed?.Invoke();
 			}
 
-			if (type == PinEventTypes.Falling)
+			if (type == _deactivatingEvent)
 			{
 				//Prevent double rising events.
 				pressed = false;

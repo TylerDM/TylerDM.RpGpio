@@ -4,6 +4,8 @@ public class PinReader : Pin, IPinReader
 {
 	private PinChangedEvent? valueChanged;
 
+	public PinReadModes Mode { get; }
+
 	public event PinChangedEvent ValueChanged
 	{
 		add => valueChanged += value;
@@ -12,6 +14,7 @@ public class PinReader : Pin, IPinReader
 
 	public PinReader(GpioController controller, GpioPin pin) : base(controller, pin)
 	{
+		Mode = pin.GetPinMode().ToEnum<PinReadModes>();
 		_pin.ValueChanged += handleValueChanged;
 	}
 
