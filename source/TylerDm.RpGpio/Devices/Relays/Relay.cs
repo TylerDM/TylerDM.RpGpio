@@ -1,6 +1,6 @@
 ﻿namespace TylerDm.RpGpio.Devices.Relays;
 
-public class Relay : WritingDevice
+public class Relay(IPinWriter pin) : WritingDevice(pin)
 {
 	private readonly DisposedTracker<Relay> _disposed = new();
 
@@ -8,11 +8,6 @@ public class Relay : WritingDevice
 	{
 		get => getValue();
 		set => setValue(value);
-	}
-
-	public Relay(IPinWriter pin) : base(pin)
-	{
-		setValue(false);
 	}
 
 	public override void Dispose()
