@@ -8,10 +8,10 @@ public class Pulser : ReadingDevice
 	private readonly PinEventTypes _pulseStartEvent;
 	private readonly PinEventTypes _pulseEndEvent;
 
-	private event PinPulseStartedEvent? onPulseStart;
-	private event PinPulseEndedEvent? onPulseEnd;
+	private event PulseStarted? onPulseStart;
+	private event PulseEnded? onPulseEnd;
 
-	public event PinPulseStartedEvent OnPulseStart
+	public event PulseStarted OnPulseStart
 	{
 		add
 		{
@@ -24,7 +24,7 @@ public class Pulser : ReadingDevice
 			onPulseStart -= value;
 		}
 	}
-	public event PinPulseEndedEvent OnPulseEnd
+	public event PulseEnded OnPulseEnd
 	{
 		add
 		{
@@ -45,24 +45,6 @@ public class Pulser : ReadingDevice
 		//So if the rest state is true, then falling to false would be the pulse.
 		_pulseStartEvent = restState ? PinEventTypes.Falling : PinEventTypes.Rising;
 		_pulseEndEvent = restState ? PinEventTypes.Rising : PinEventTypes.Falling;
-	}
-
-	public async Task<bool> TryWaitForPulseAsync(Ct ct = default)
-	{
-		_disposed.ThrowIf();
-
-		using var linkedCts = _disposed.CreateLinkedCts(ct);
-		using var gate = new Gate();
-		void handlePulse() => gate.Open();
-		try
-		{
-			OnPulseStart += handlePulse;
-			return await gate.TryWaitAsync(linkedCts.Token);
-		}
-		finally
-		{
-			OnPulseStart -= handlePulse;
-		}
 	}
 
 	public override void Dispose()

@@ -1,18 +1,13 @@
 ﻿namespace TylerDm.RpGpio.Devices;
 
-public abstract class WritingDevice : IDevice, IDisposable
+public abstract class WritingDevice(IPinWriter pin) : IDevice, IDisposable
 {
-	private readonly IPinWriter _pin;
+	private readonly IPinWriter _pin = pin;
 
 	private bool state;
 	private bool disposed;
 
 	public PinNumber PinNumber => _pin.Number;
-
-	protected WritingDevice(IPinWriter pin)
-	{
-		_pin = pin;
-	}
 
 	public virtual void Dispose()
 	{

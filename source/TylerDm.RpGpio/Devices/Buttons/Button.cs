@@ -6,10 +6,10 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 	private readonly Lock _lock = new();
 	private readonly Stopwatch _stopwatch = new();
 
-	private event ButtonPressedEvent? onPressedEvent;
-	private event ButtonReleasedEvent? onReleasedEvent;
+	private event ButtonPressed? onPressedEvent;
+	private event ButtonReleased? onReleasedEvent;
 
-	public event ButtonPressedEvent OnPressedEvent
+	public event ButtonPressed OnPressedEvent
 	{
 		add
 		{
@@ -22,7 +22,7 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 			onPressedEvent -= value;
 		}
 	}
-	public event ButtonReleasedEvent OnReleasedEvent
+	public event ButtonReleased OnReleasedEvent
 	{
 		add
 		{
@@ -33,44 +33,6 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 		{
 			_disposed.ThrowIf();
 			onReleasedEvent -= value;
-		}
-	}
-	public async Task<bool> TryWaitForPressAsync()
-	{
-		_disposed.ThrowIf();
-
-		using var gate = new Gate();
-		void handlePressed() => gate.Open();
-
-		OnPressedEvent += handlePressed;
-		try
-		{
-			return await gate.TryWaitAsync(_disposed.CancellationToken);
-		}
-		finally
-		{
-			OnPressedEvent -= handlePressed;
-		}
-	}
-
-	public async Task<bool> TryWaitForPressAsync(Ct ct)
-	{
-		_disposed.ThrowIf();
-
-		using var linkedCts = _disposed.CreateLinkedCts(ct);
-		var token = linkedCts.Token;
-
-		using var gate = new Gate();
-		void handlePressed() => gate.Open();
-
-		OnPressedEvent += handlePressed;
-		try
-		{
-			return await gate.TryWaitAsync(token);
-		}
-		finally
-		{
-			OnPressedEvent -= handlePressed;
 		}
 	}
 
