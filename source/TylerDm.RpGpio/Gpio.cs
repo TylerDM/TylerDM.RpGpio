@@ -1,6 +1,5 @@
 ﻿namespace TylerDm.RpGpio;
 
-[DependencyInjectable(ServiceLifetime.Singleton, typeof(IGpio))]
 public class Gpio : IDisposable, IGpio
 {
 	private readonly GpioController _controller = new();
@@ -8,13 +7,13 @@ public class Gpio : IDisposable, IGpio
 	public PinWriter OpenWrite(PinNumber pinNumber)
 	{
 		var pin = _controller.OpenPin((int)pinNumber, PinMode.Output);
-		return new PinWriter(_controller, pin);
+		return new(_controller, pin);
 	}
 
-	public PinReader OpenRead(PinNumber pinNumber)
+	public PinReader OpenRead(PinNumber pinNumber, PinReadModes mode = PinReadModes.InputPullDown)
 	{
-		var pin = _controller.OpenPin((int)pinNumber, PinMode.Input);
-		return new PinReader(_controller, pin);
+		var pin = _controller.OpenPin((int)pinNumber, (PinMode)mode);
+		return new(_controller, pin);
 	}
 
 	public void Dispose() =>
@@ -23,6 +22,6 @@ public class Gpio : IDisposable, IGpio
 	IPinWriter IGpio.OpenWrite(PinNumber pinNumber) =>
 		OpenWrite(pinNumber);
 
-	IPinReader IGpio.OpenRead(PinNumber pinNumber) =>
-		OpenRead(pinNumber);
+	IPinReader IGpio.OpenRead(PinNumber pinNumber, PinReadModes mode) =>
+		OpenRead(pinNumber, mode);
 }

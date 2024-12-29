@@ -4,8 +4,8 @@ public class TestingGpio : IGpio
 {
 	private readonly Dictionary<PinNumber, bool> _values = [];
 
-	public IPinReader OpenRead(PinNumber pinNumber) =>
-		new TestingPin(this, pinNumber);
+	public IPinReader OpenRead(PinNumber pinNumber, PinReadModes mode = PinReadModes.Input) =>
+		new TestingPin(this, pinNumber);//Mode is irrelevant.
 
 	public IPinWriter OpenWrite(PinNumber pinNumber) =>
 		new TestingPin(this, pinNumber);
