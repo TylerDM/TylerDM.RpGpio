@@ -8,4 +8,4 @@ global using TylerDM.StandardLibrary.System;
 global using TylerDM.StandardLibrary.System.Threading;
 global using TylerDm.RpGpio.Extensions;
 global using System.Diagnostics;
-global using TylerDm.RpGpio.Tools;
+global using TylerDM.StandardLibrary.Patterns;

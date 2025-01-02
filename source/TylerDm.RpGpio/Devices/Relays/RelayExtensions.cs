@@ -7,7 +7,7 @@ public static class RelayExtensions
 	public static Relay OpenRelay(this IGpio gpio, PinNumber pin) =>
 		new(gpio.OpenWrite(pin));
 
-	public static BgTaskHandle ToggleScope(this Relay relay) =>
+	public static CancellableBackgroundTask ToggleScope(this Relay relay) =>
 		new(relay.ToggleAsync);
 
 	public static async Task ToggleAsync(this Relay relay, CancellationToken ct)
