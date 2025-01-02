@@ -38,8 +38,7 @@ public class Pulser(IPinReader pin) : ReadingDevice(pin)
 
 	public override void Dispose()
 	{
-		if (_disposed) return;
-		_disposed.Dispose();
+		if (_disposed.Dispose()) return;
 
 		base.Dispose();
 	}
