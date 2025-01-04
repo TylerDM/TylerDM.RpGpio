@@ -19,3 +19,9 @@ Examples of currently implemented devices:
   - Allows you to quickly make use of any grid based keypad.
   - Provides built in support for the Parallax 4x4.
   - Prevents invalid states caused by hardware noise.
+
+Other devices as of time of writing:
+- Buzzers
+- LEDs
+- Pulsers
+- Relays
