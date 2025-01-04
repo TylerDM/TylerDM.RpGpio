@@ -9,3 +9,7 @@ global using TylerDM.StandardLibrary.System.Threading;
 global using TylerDm.RpGpio.Extensions;
 global using System.Diagnostics;
 global using TylerDM.StandardLibrary.Patterns;
+global using System.Collections.Generic;
+global using TylerDM.StandardLibrary.System.Collections.Generic;
+global using System.Linq;
+global using System.Collections.Frozen;
