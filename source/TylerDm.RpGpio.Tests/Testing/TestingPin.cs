@@ -1,8 +1,11 @@
 ﻿namespace TylerDm.RpGpio.Testing;
 
-public class TestingPin(TestingGpio gpio, PinNumber number, PinReadModes mode) : IPinReader, IPinWriter
+public class TestingPin : IPinReader, IPinWriter
 {
+	private readonly bool _restValue;
+
 	private PinChangedEvent? valueChanged;
+	private bool value;
 
 	public event PinChangedEvent ValueChanged
 	{
@@ -10,24 +13,41 @@ public class TestingPin(TestingGpio gpio, PinNumber number, PinReadModes mode) :
 		remove => valueChanged -= value;
 	}
 
-	public PinNumber Number { get; } = number;
-	public PinReadModes Mode { get; } = mode;
+	public PinNumber Number { get; }
+	public PinReadModes Mode { get; }
+
+	public TestingPin(PinNumber number, PinReadModes mode)
+	{
+		Number = number;
+		Mode = mode;
+		//Pull up resistors will cause the value to read high by default.
+		_restValue = mode == PinReadModes.InputPullUp;
+		value = _restValue;
+	}
 
 	public void Dispose() { }
 
 	public bool Read() =>
-		gpio.Read(Number);
+		value;
 
 	public void Write(bool newValue)
 	{
 		var previousValue = Read();
 
-		gpio.Write(Number, newValue);
+		value = newValue;
 
 		if (valueChanged is null) return;
 
 		var eventType = getEventType(previousValue, newValue);
 		valueChanged.Invoke(eventType);
+	}
+
+	public void Pulse(bool? value = null)
+	{
+		value ??= Mode != PinReadModes.InputPullUp;
+
+		Write(value.Value);
+		Write(!value.Value);
 	}
 
 	private static PinEventTypes getEventType(bool previousValue, bool newValue)
