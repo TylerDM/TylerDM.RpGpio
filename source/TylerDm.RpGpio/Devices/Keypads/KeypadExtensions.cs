@@ -29,7 +29,7 @@ public static class KeypadExtensions
 		return new(map, pins);
 	}
 
-	public static async Task<string> ReadUntilAsync(this Keypad keypad, CancellationToken ct, Action<char>? onKeyPress = null)
+	public static async Task<string> ReadUntilCancelAsync(this Keypad keypad, CancellationToken ct, Action<char>? onKeyPress = null)
 	{
 		var list = new List<char>(10);
 		void handleKeyPressed(char ch)
@@ -49,36 +49,6 @@ public static class KeypadExtensions
 			keypad.OnKeyPressed -= handleKeyPressed;
 		}
 	}
-
-	/// <summary>
-	/// Reads characters from the keyboard until an end condition is met.
-	/// </summary>
-	/// <param name="count">The maximum number of characters before returning.</param>
-	/// <param name="cancelChar">A character, typically #, that triggers a return.  This character is stripped from the output.</param>
-	/// <param name="ct">A cancellation token to trigger return with.</param>
-	/// <returns>A string containing the pressed characters.</returns>
-	public static async Task<string> ReadUntilAsync(this Keypad keypad, int count, char cancelChar = default, CancellationToken ct = default)
-	{
-		using var cts = createIfDefaultOrLink(ct);
-		var counted = 0;
-		void onKeyPress(char ch)
-		{
-			if (ch == cancelChar || ++counted >= count)
-				cts.Cancel();
-		}
-		var value = await keypad.ReadUntilAsync(cts.Token, onKeyPress);
-
-		//Remove the cancelChar if it was used to cancel.
-		if (value[^1] == cancelChar)
-			value = value[..^1];
-
-		return value;
-	}
-
-	private static CancellationTokenSource createIfDefaultOrLink(CancellationToken ct) =>
-		ct == default ?
-			new() :
-			CancellationTokenSource.CreateLinkedTokenSource(ct);
 
 	private static KeypadMap buildParallax4x4Map() =>
 		new

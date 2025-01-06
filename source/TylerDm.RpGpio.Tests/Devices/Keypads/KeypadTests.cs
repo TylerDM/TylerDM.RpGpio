@@ -5,11 +5,11 @@ public class KeypadTests
 	private const PinReadModes _pinReadMode = KeypadExtensions._pinReadMode;
 
 	[Fact]
-	public Task ReadUntilAsync() =>
+	public Task ReadUntilCancelAsync() =>
 		testInContextAsync(async (keypad, p0, p1, p2, p3, p4, p5, p6, p7) =>
 		{
-			var waitTask = keypad.ReadUntilAsync(2);
-			await wait1ms();
+			using var cts = new CancellationTokenSource();
+			var waitTask = keypad.ReadUntilCancelAsync(cts.Token);
 			Assert.False(waitTask.IsCompleted);
 
 			//1
@@ -22,34 +22,15 @@ public class KeypadTests
 			p7.Pulse();
 			p0.Pulse();
 			await wait1ms();
+			Assert.False(waitTask.IsCompleted);
+
+			cts.Cancel();
+			await wait1ms();
 			Assert.True(waitTask.IsCompleted);
+			Assert.True(waitTask.IsCompletedSuccessfully);
 
 			var text = await waitTask;
 			Assert.Equal("1A", text);
-		});
-
-	[Fact]
-	public Task ReadUntilCharAsync() =>
-		testInContextAsync(async (keypad, p0, p1, p2, p3, p4, p5, p6, p7) =>
-		{
-			var waitTask = keypad.ReadUntilAsync(10, '#');
-			await wait1ms();
-			Assert.False(waitTask.IsCompleted);
-
-			//1
-			p7.Pulse();
-			p3.Pulse();
-			await wait1ms();
-			Assert.False(waitTask.IsCompleted);
-
-			//#
-			p4.Pulse();
-			p1.Pulse();
-			await wait1ms();
-			Assert.True(waitTask.IsCompleted);
-
-			var text = await waitTask;
-			Assert.Equal("1", text);
 		});
 
 	[Fact]
