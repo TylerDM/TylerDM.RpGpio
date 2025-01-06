@@ -2,17 +2,19 @@
 
 public class TestingGpio : IGpio
 {
-	private readonly Dictionary<PinNumber, bool> _values = [];
+	public TestingPin OpenRead(PinNumber pinNumber, PinReadModes mode = PinReadModes.Input) =>
+		new(pinNumber, mode);
 
-	public IPinReader OpenRead(PinNumber pinNumber, PinReadModes mode = PinReadModes.Input) =>
-		new TestingPin(this, pinNumber, mode);//Mode is irrelevant.
+	public TestingPin OpenWrite(PinNumber pinNumber) =>
+		new(pinNumber, PinReadModes.Input);
 
-	public IPinWriter OpenWrite(PinNumber pinNumber) =>
-		new TestingPin(this, pinNumber, PinReadModes.Input);
+	void IDisposable.Dispose()
+	{
+	}
 
-	internal void Write(PinNumber number, bool value) =>
-		_values[number] = value;
+	IPinWriter IGpio.OpenWrite(PinNumber pinNumber) =>
+		OpenWrite(pinNumber);
 
-	internal bool Read(PinNumber number) =>
-		_values.TryGetValue(number, out bool value) && value;
+	IPinReader IGpio.OpenRead(PinNumber pinNumber, PinReadModes mode) =>
+		OpenRead(pinNumber, mode);
 }

@@ -22,6 +22,7 @@ public class PinReader : Pin, IPinReader
 	{
 		base.Dispose();
 		_pin.ValueChanged -= handleValueChanged;
+		valueChanged = null;
 	}
 
 	public bool Read() =>
