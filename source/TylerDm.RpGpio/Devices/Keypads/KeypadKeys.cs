@@ -1,4 +1,4 @@
-﻿namespace TylerDm.RpGpio.Devices.Keypad;
+﻿namespace TylerDm.RpGpio.Devices.Keypads;
 
 public enum KeypadKeys
 {
