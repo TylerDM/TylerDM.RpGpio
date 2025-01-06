@@ -8,20 +8,12 @@ Features:
 - Abstract away if you're using Input, InputPullUp, or InputPullDown.
 
 # Devices
-Wrapper classes are provided for common hardware.  Check the Devices folder to see all currently available device wrappers.
+Wrapper classes are provided for common hardware and provide common featuring like debouncing and noise filtering.  Check the Devices folder to see all currently available device wrappers.
 
-Examples of currently implemented devices:
-- Button
-  - Prevent double events caused by noise inherent when using Input and InputPullDown mode.
-  - Measures the amount of time a button was held down.
-  - Provides an API surface that abstracts if (or if any) pull up or down resistors are used.
-- Keypad
-  - Allows you to quickly make use of any grid based keypad.
-  - Provides built in support for the Parallax 4x4.
-  - Prevents invalid states caused by hardware noise.
-
-Other devices as of time of writing:
+Implemented as of time of writing:
 - Buzzers
 - LEDs
 - Pulsers
 - Relays
+- Parallax 4x4 Keypad
+- Buttons
