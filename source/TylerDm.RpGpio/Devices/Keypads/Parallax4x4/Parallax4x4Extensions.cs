@@ -20,14 +20,4 @@ public static class Parallax4x4Extensions
 			gpio.OpenRead(p6r, _readMode),
 			gpio.OpenRead(p7r, _readMode)
 		);
-
-	public static Parallax4x4 OpenParallax4x4(this IGpio gpio,
-		IPinWriter p0w, IPinWriter p1w, IPinWriter p2w, IPinWriter p3w,
-		IPinReader p4r, IPinReader p5r, IPinReader p6r, IPinReader p7r
-	) =>
-		new
-		(
-			p0w, p1w, p2w, p3w,
-			p4r, p5r, p6r, p7r
-		);
 }
