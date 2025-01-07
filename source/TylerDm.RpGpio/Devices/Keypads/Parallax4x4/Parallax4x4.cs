@@ -1,7 +1,7 @@
 ﻿namespace TylerDm.RpGpio.Devices.Keypads.Parallax4x4;
 
 //Pin numbering matches document at https://cdn.sparkfun.com/assets/f/f/a/5/0/DS-16038.pdf
-public class Parallax4x4 : IDisposable
+public class Parallax4x4 : IDisposable, IKeypad
 {
 	private static readonly TimeSpan _noiseDelay = TimeSpan.FromMilliseconds(250);
 
