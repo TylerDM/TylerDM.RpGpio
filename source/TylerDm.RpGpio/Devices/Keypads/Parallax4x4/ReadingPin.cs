@@ -2,6 +2,8 @@
 
 internal class ReadingPin : IDisposable
 {
+	private const PinEventTypes _activatingEvent = PinEventTypes.Rising;
+
 	private readonly DisposedTracker<ReadingPin> _disposed = new();
 
 	private readonly IPinReader _pin;
@@ -40,7 +42,7 @@ internal class ReadingPin : IDisposable
 	{
 		if (eventType == PinEventTypes.None) return;
 
-		if (eventType == PinEventTypes.Falling)
+		if (eventType != _activatingEvent)
 		{
 			raised = false;
 			return;

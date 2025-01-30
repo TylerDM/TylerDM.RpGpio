@@ -38,6 +38,8 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 		}
 	}
 
+	public TimeSpan MinimumDuration { get; set; } = TimeSpan.Zero;
+
 	public override void Dispose()
 	{
 		if (_disposed.Dispose()) return;
@@ -66,8 +68,9 @@ public class Button(IPinReader pin) : ReadingDevice(pin)
 				//Prevent double rising events.
 				pressed = false;
 
-				_stopwatch.Stop();
-				onButtonReleased?.Invoke(_stopwatch.Elapsed);
+				var elapsed = _stopwatch.Elapsed;
+				if (elapsed > MinimumDuration)
+					onButtonReleased?.Invoke(elapsed);
 				_stopwatch.Reset();
 			}
 		}

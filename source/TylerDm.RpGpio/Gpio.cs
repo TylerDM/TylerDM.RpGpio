@@ -1,8 +1,17 @@
-﻿namespace TylerDm.RpGpio;
+﻿using System.Device.Gpio.Drivers;
 
-public class Gpio : IDisposable, IGpio
+namespace TylerDm.RpGpio;
+
+public class Gpio(GpioController? controller = null) : IDisposable, IGpio
 {
-	private readonly GpioController _controller = new();
+	private readonly GpioController _controller = controller ?? new();
+
+	public Gpio(int chipNumber, PinNumberingScheme scheme = PinNumberingScheme.Logical) : this(new
+		(
+			scheme,
+			new LibGpiodDriver(chipNumber)
+		))
+	{ }
 
 	public PinWriter OpenWrite(PinNumber pinNumber)
 	{

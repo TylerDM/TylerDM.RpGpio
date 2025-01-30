@@ -1,10 +1,8 @@
 ﻿namespace TylerDm.RpGpio.Devices.Keypads.Parallax4x4;
 
 //Pin numbering matches document at https://cdn.sparkfun.com/assets/f/f/a/5/0/DS-16038.pdf
-public class Parallax4x4 : IDisposable
+public class Parallax4x4 : IDisposable, IKeypad
 {
-	private static readonly TimeSpan _noiseDelay = TimeSpan.FromMilliseconds(250);
-
 	private readonly DisposedTracker<Parallax4x4> _disposed = new();
 
 	private readonly IPinWriter _pin0;
@@ -31,6 +29,11 @@ public class Parallax4x4 : IDisposable
 		}
 		remove => onKeyPressed -= value;
 	}
+
+	/// <summary>
+	/// The delay after a key press before allowing another key press.  This prevents double key presses and other electrical noise.
+	/// </summary>
+	public TimeSpan NoiseDelay { get; } = TimeSpan.FromMilliseconds(250);
 
 	public Parallax4x4(
 		IPinWriter pin0, IPinWriter pin1, IPinWriter pin2, IPinWriter pin3,
@@ -93,7 +96,7 @@ public class Parallax4x4 : IDisposable
 
 	private async void resumeListeningLaterAsync()
 	{
-		await _noiseDelay.WaitAsync();
+		await NoiseDelay.WaitAsync();
 		setListeningAll(true);
 	}
 
