@@ -2,9 +2,9 @@
 
 public static class Startup
 {
-	public static void AddRpGpio(this IServiceCollection services)
+	public static void AddRpGpio(this IServiceCollection services, Func<Gpio>? createGpio = null)
 	{
-		services.AddSingleton<Gpio>();
+		services.AddSingleton<Gpio>(createGpio?.Invoke() ?? new());
 		services.AddSingleton<IGpio, Gpio>(x => x.GetRequiredService<Gpio>());
 	}
 }
