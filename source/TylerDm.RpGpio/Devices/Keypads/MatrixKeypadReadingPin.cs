@@ -1,29 +1,27 @@
-﻿namespace TylerDm.RpGpio.Devices.Keypads.Parallax4x4;
+﻿namespace TylerDm.RpGpio.Devices.Keypads;
 
-internal class ReadingPin : IDisposable
+internal class MatrixKeypadReadingPin : IDisposable
 {
 	private const PinEventTypes _activatingEvent = PinEventTypes.Rising;
 
-	private readonly DisposedTracker<ReadingPin> _disposed = new();
+	private readonly DisposedTracker<MatrixKeypadReadingPin> _disposed = new();
 
 	private readonly IPinReader _pin;
 
 	private bool raised = false;
 
-	private event ReadingPinActivatedEvent? onActivated;
+	private event MatrixKeypadReadingPinActivated? onActivated;
 
-	public event ReadingPinActivatedEvent OnActivated
+	public event MatrixKeypadReadingPinActivated OnActivated
 	{
 		add => onActivated += value;
 		remove => onActivated -= value;
 	}
 	public bool Listening { get; set; } = true;
-	public ReadingPins PinNumber { get; }
 
-	public ReadingPin(IPinReader pin, ReadingPins pinNumber)
+	public MatrixKeypadReadingPin(IPinReader pin)
 	{
 		_pin = pin;
-		PinNumber = pinNumber;
 		_pin.ValueChanged += handlePinChanged;
 	}
 
