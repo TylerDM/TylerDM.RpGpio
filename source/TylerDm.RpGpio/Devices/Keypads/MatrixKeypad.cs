@@ -23,7 +23,7 @@ public class MatrixKeypad : IDisposable, IKeypad
 	/// <summary>
 	/// The delay after a key press before allowing another key press.  This prevents double key presses and other electrical noise.
 	/// </summary>
-	public TimeSpan NoiseDelay { get; } = TimeSpan.FromMilliseconds(250);
+	public TimeSpan NoiseDelay { get; set; } = TimeSpan.FromMilliseconds(250);
 
 	public MatrixKeypad(IPinReader[] readingPins, IPinWriter[] writingPins, char[,] mapping)
 	{
